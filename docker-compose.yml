@@ -1,0 +1,114 @@
+services:
+
+  feedback-api:
+    image: ${DOCKER_REGISTRY-}feedback-api
+    container_name: "feedback-api"
+    build:
+      context: .
+      dockerfile: FeedbackSubmission.API/Dockerfile
+    ports:
+    - "5000:5000"
+    - "5001:5001"
+    depends_on:
+    - feedback-database
+
+  feedback-analytics-api:
+    image: ${DOCKER_REGISTRY-}feedback-analytics-api
+    container_name: "feedback-analytics-api"
+    build:
+      context: .
+      dockerfile: FeedbackSubmission.Analytics.API/Dockerfile
+    ports:
+    - "6000:6000"
+    - "6001:6001"
+    depends_on:
+    - feedback-mongo
+
+  feedback-database:
+    image: postgres:latest
+    container_name: "feedback-database"
+    environment:
+     - POSTGRES_DB=feedback.database
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+    ports:
+    - "5432:5432"
+    volumes:
+    - ./.containers/database/feedback:/var/lib/postgresql/data
+  
+  feedback-mongo:
+    image: mongo:latest
+    container_name: "feedback-mongo"
+    command:
+        ["--replSet", "feedback-replicaset", "--port", "27017",]
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'feedback-replicaset',members:[{_id:0,host:'feedback-mongo:27017',priority:1},{_id:1,host:'feedback-mongo-replicaset:27018',priority:0.5}]}) }" | mongosh --port 27017 --quiet
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
+    ports:
+     - "27017:27017"
+    volumes:
+    - ./.containers/database/feedback_analytics:/data/db
+
+  feedback-mongo-replicaset:
+    image: mongo:latest
+    command:
+        ["--replSet", "feedback-replicaset", "--port", "27018",]
+    container_name: "feedback-mongo-replicaset"
+    ports:
+     - "27018:27018"
+    volumes:
+    - ./.containers/database/feedback_analytics-replicaset:/data/db
+    depends_on:
+     - feedback-mongo
+   
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      me_config_mongodb_server: feedback-mongo
+      ME_CONFIG_MONGODB_URL: "mongodb://mongo:mongo@feedback-mongo:27017/"
+      me_config_mongodb_adminusername: mongo
+      me_config_mongodb_adminpassword: mongo
+    depends_on: 
+      - feedback-mongo
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
+      PGADMIN_DEFAULT_PASSWORD: strong-password
+    volumes:
+      - ./.containers/database/pgadmin-data:/var/lib/pgadmin
+
+  # feedback-seq:
+  #   image: datalust/seq
+  #   container_name: "feedback-seq"
+  #   environment:
+  #    - ACCEPT_EULA=Y
+  #   ports:
+  #    - "5341:5341"
+  #    - "5050:80"
+  #   depends_on:
+  #       - feedback-api
+  
+  feedback-rabbitmq:
+    image: rabbitmq:management
+    container_name: "feedback.rabbitmq"
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+    volumes:
+     - ./.containers/rabbitmq/data/:/var/lib/rabbitmq/
+     - ./.containers/rabbitmq/log/:/var/log/rabbitmq
+
