@@ -1,3 +1,5 @@
+name: Customer feedback
+
 services:
 
   feedback-api:
@@ -5,7 +7,7 @@ services:
     container_name: "feedback-api"
     build:
       context: .
-      dockerfile: FeedbackSubmission.API/Dockerfile
+      dockerfile: src/FeedbackSubmission.API/Dockerfile
     ports:
     - "5000:5000"
     - "5001:5001"
@@ -17,7 +19,7 @@ services:
     container_name: "feedback-analytics-api"
     build:
       context: .
-      dockerfile: FeedbackSubmission.Analytics.API/Dockerfile
+      dockerfile: src/FeedbackSubmission.Analytics.API/Dockerfile
     ports:
     - "6000:6000"
     - "6001:6001"
@@ -73,9 +75,7 @@ services:
       - 8081:8081
     environment:
       me_config_mongodb_server: feedback-mongo
-      ME_CONFIG_MONGODB_URL: "mongodb://mongo:mongo@feedback-mongo:27017/"
-      me_config_mongodb_adminusername: mongo
-      me_config_mongodb_adminpassword: mongo
+      ME_CONFIG_MONGODB_URL: "mongodb://feedback-mongo:27017/"
     depends_on: 
       - feedback-mongo
 
@@ -91,24 +91,26 @@ services:
     volumes:
       - ./.containers/database/pgadmin-data:/var/lib/pgadmin
 
-  # feedback-seq:
-  #   image: datalust/seq
-  #   container_name: "feedback-seq"
-  #   environment:
-  #    - ACCEPT_EULA=Y
-  #   ports:
-  #    - "5341:5341"
-  #    - "5050:80"
-  #   depends_on:
-  #       - feedback-api
+  feedback-seq:
+    image: datalust/seq
+    container_name: "feedback-seq"
+    environment:
+     - ACCEPT_EULA=Y
+    ports:
+     - "5341:5341"
+     - "5050:80"
+    depends_on:
+        - feedback-api
   
   feedback-rabbitmq:
     image: rabbitmq:management
-    container_name: "feedback.rabbitmq"
+    container_name: "feedback-rabbitmq"
     ports:
      - "5672:5672"
      - "15672:15672"
     volumes:
      - ./.containers/rabbitmq/data/:/var/lib/rabbitmq/
      - ./.containers/rabbitmq/log/:/var/log/rabbitmq
-
+    depends_on:
+        - feedback-api
+        - feedback-analytics-api

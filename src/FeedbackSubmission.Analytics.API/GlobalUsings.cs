@@ -1,0 +1,9 @@
+﻿global using MongoDB.Bson;
+global using FeedbackSubmission.Analytics.API.Features.Analytics.Entities;
+global using Microsoft.EntityFrameworkCore;
+global using MongoDB.EntityFrameworkCore.Extensions;
+global using FeedbackSubmission.Analytics.API.Database;
+global using MassTransit;
+global using Shared.Contracts;
+global using Asp.Versioning;
+global using Microsoft.AspNetCore.Http.HttpResults;
