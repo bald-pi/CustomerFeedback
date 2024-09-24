@@ -74,9 +74,9 @@ Once is done, you should see this picture:
 There are few containers you can run for browser via URL provided:
 
 - **Create feedback service**: [Swagger documentation](https://localhost:5001/api/docs/index.html)
-<br>
+
 - **Feedback analytics service**: [Swagger documentation](https://localhost:6001/api/docs/index.html)
-<br>
+
 - **RabbitMQ portal**: [UI portal](http://localhost:15672/) (credentials are **guest**/**guest**)
-<br>
+
 - **Seq portal**: [UI portal](http://localhost:5050/)
