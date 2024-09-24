@@ -76,7 +76,7 @@ There are few containers you can run for browser via URL provided.
 #### Create feedback service
 
 ```http
-https://localhost:5001/api/docs/index.html
+[https://localhost:5001/api/docs/index.html](https://localhost:5001/api/docs/index.html)
 ```
 
 #### Feedback analytics service
