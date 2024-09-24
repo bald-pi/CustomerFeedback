@@ -12,10 +12,6 @@
   - [Step one](#step-one)
   - [Step two](#step-two)
   - [Step three](#step-three)
-    - [Create feedback service](#create-feedback-service)
-    - [Feedback analytics service](#feedback-analytics-service)
-    - [RabbitMQ portal](#rabbitmq-portal)
-    - [Seq](#seq)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
