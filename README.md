@@ -21,7 +21,7 @@
 
 ## Overview
 
-View repository and user information, control your notifications and even manage your issues and pull requests. Built with React Native, GitPoint is one of the most feature-rich unofficial GitHub clients that is 100% free.
+A customer feedback application receives and processes feedback messages at a high rate. The client application sends feedback messages to a REST API endpoint in bulk (an array of feedback messages) at a rate of 2,000 messages per second. 
 
 ## Technologies
 
