@@ -77,4 +77,4 @@ There are few containers you can run for browser via URL provided:
 
 - **Seq portal**: [UI portal](http://localhost:5050/)
 
-- - **Jagger portal**: [UI portal](http://localhost:16686/)
+- **Jagger portal**: [UI portal](http://localhost:16686/)
