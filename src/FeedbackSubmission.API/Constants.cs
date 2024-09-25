@@ -1,6 +1,6 @@
 ﻿namespace FeedbackSubmission.API;
 
-internal static class Constants
+public static class Constants
 {
     public static string DATABASE = nameof(DATABASE);
     public static string SQL_COPY_STATEMENT = "COPY Feedbacks (submission_date, customer_id, feedback_text, tags) FROM STDIN (FORMAT BINARY)";

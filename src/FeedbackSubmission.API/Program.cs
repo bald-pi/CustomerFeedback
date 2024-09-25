@@ -17,3 +17,5 @@ app.AddSharedMiddlewareConfiguration();
 app.RegisterEndpoints();
 
 await app.RunAsync();
+
+public partial class Program;

@@ -1,6 +1,6 @@
 ﻿namespace FeedbackSubmission.API.Features.Feedback.Endpoints.CreateFeedback;
 
-internal class Validator : AbstractValidator<CreateFeedbackRequest>
+public class Validator : AbstractValidator<CreateFeedbackRequest>
 {
     public Validator()
     {

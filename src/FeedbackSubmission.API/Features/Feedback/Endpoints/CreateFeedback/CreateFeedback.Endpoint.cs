@@ -21,7 +21,7 @@ public static partial class CreateFeedbackEndpoint
                  .WithMetadata(new SwaggerRequestExampleAttribute(typeof(CreateFeedbackRequest), typeof(CreateFeedbackRequestExample)));
     }
 
-    private static async Task<Result<ulong>> Endpoint(CreateFeedbackRequest request,
+    public static async Task<Result<ulong>> Endpoint(CreateFeedbackRequest request,
                                                       IConfiguration configuration,
                                                       DatabaseContext databaseContext,
                                                       IPublishEndpoint publisher,

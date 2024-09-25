@@ -1,3 +1,3 @@
 ﻿namespace FeedbackSubmission.API.Features.Feedback.Endpoints.CreateFeedback;
 
-internal sealed record CreateFeedbackRequest(string[] FeedbackText);
+public sealed record CreateFeedbackRequest(string[] FeedbackText);
