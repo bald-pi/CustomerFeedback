@@ -1,4 +1,4 @@
-name: Customer feedback
+name: Customer_feedback
 
 services:
 
@@ -13,6 +13,9 @@ services:
     - "5001:5001"
     depends_on:
     - feedback-database
+    environment: 
+        OTEL_EXPORTER_OTLP_ENDPOINT: "http://feedback-jagger:4317"
+        
 
   feedback-analytics-api:
     image: ${DOCKER_REGISTRY-}feedback-analytics-api
@@ -25,6 +28,8 @@ services:
     - "6001:6001"
     depends_on:
     - feedback-mongo
+    environment: 
+        OTEL_EXPORTER_OTLP_ENDPOINT: "http://feedback-jagger:4317"
 
   feedback-database:
     image: postgres:latest
@@ -66,30 +71,6 @@ services:
     - ./.containers/database/feedback_analytics-replicaset:/data/db
     depends_on:
      - feedback-mongo
-   
-  mongo-express:
-    image: mongo-express
-    container_name: mongo-express
-    restart: always
-    ports:
-      - 8081:8081
-    environment:
-      me_config_mongodb_server: feedback-mongo
-      ME_CONFIG_MONGODB_URL: "mongodb://feedback-mongo:27017/"
-    depends_on: 
-      - feedback-mongo
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin4_container
-    restart: always
-    ports:
-      - "8888:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
-      PGADMIN_DEFAULT_PASSWORD: strong-password
-    volumes:
-      - ./.containers/database/pgadmin-data:/var/lib/pgadmin
 
   feedback-seq:
     image: datalust/seq
@@ -114,3 +95,10 @@ services:
     depends_on:
         - feedback-api
         - feedback-analytics-api
+  
+  feedback-jagger:
+    image: jaegertracing/all-in-one:latest
+    container_name: "feedback-jagger"
+    ports:
+     - "16686:16686"
+     - "4318:4318"

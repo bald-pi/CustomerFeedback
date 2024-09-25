@@ -3,12 +3,11 @@
 internal static class Constants
 {
     public static string DATABASE = nameof(DATABASE);
+    public static string SQL_COPY_STATEMENT = "COPY Feedbacks (submission_date, customer_id, feedback_text, tags) FROM STDIN (FORMAT BINARY)";
+    public static FormattableString SQL_SELECT_STATEMENT = $"SELECT id, submission_date, customer_id, tags FROM feedbacks ORDER BY id";
 
     public static string TAGS_REGEX = @"\[([^\]]+)\]";
-
     public static string DEFAULT_TAG_VALUE = "[uncategorized]";
-
-    public static string SQL_COPY_STATEMENT = "COPY Feedbacks (submission_date, customer_id, feedback_text, tags) FROM STDIN (FORMAT BINARY)";
 
     public static string[] REQUEST_EXAMPLE =
     [
@@ -2015,9 +2014,13 @@ internal static class Constants
     ];
 
     public static string MIGRATION_ID_COLUMN_NAME = "MigrationId";
-
     public static string PRODUCT_VERSION_COLUMN_NAME = "ProductVersion";
 
-
     public static string SWAGGER_API_TITLE = "Feedback Submission API";
+    public static string SWAGGER_PREFIX = "api/v{apiVersion:apiVersion}/feedback";
+    public static string SWAGGER_SUMMARY = "Insert feedback messages";
+
+    public static string VALIDATION_NOT_NULL_REQUEST_MESSAGE = "The request cannot be null.";
+    public static string VALIDATION_FEEDBACK_TEXT = "The array cannot be null.";
+    public static string VALIDATION_FEEDBACK_TEXT_LENGTH = "The array must contain at least one element.";
 }

@@ -1,16 +1,18 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 5000
-EXPOSE 5001
+EXPOSE 6000
+EXPOSE 6001
+
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["FeedbackSubmission.API/FeedbackSubmission.API.csproj", "FeedbackSubmission.API/"]
-RUN dotnet restore "./FeedbackSubmission.API/FeedbackSubmission.API.csproj"
+COPY ["src/FeedbackSubmission.API/FeedbackSubmission.API.csproj", "src/FeedbackSubmission.API/"]
+COPY ["src/Shared/Shared.csproj", "src/Shared/"]
+RUN dotnet restore "./src/FeedbackSubmission.API/FeedbackSubmission.API.csproj"
 COPY . .
-WORKDIR "/src/FeedbackSubmission.API"
+WORKDIR "/src/src/FeedbackSubmission.API"
 RUN dotnet build "./FeedbackSubmission.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

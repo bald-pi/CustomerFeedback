@@ -1,6 +1,10 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
 using Shared.Middlewares;
 
@@ -15,6 +19,8 @@ public static class AppConfiguration
         services.AddProblemDetails();
 
         services.RegisterApiVersioning(swagggerDocumentTitle);
+
+        services.RegisterOpenTelemetry(swagggerDocumentTitle);
 
         builder.ConfigureSerilog();
     }
@@ -50,6 +56,26 @@ public static class AppConfiguration
 
         return services;
     }
+
+    private static IServiceCollection RegisterOpenTelemetry(this IServiceCollection services, string serviceName)
+    {
+        services.AddOpenTelemetry().ConfigureResource(resources => resources.AddService(serviceName))
+                                   .WithTracing(builder =>
+                                   {
+                                       builder.AddHttpClientInstrumentation();
+                                       builder.AddAspNetCoreInstrumentation();
+                                       builder.AddNpgsql();
+                                       builder.AddEntityFrameworkCoreInstrumentation();
+                                       builder.AddSource(MassTransit.Logging.DiagnosticHeaders.DefaultListenerName);
+
+                                       builder.AddOtlpExporter();
+                                   });
+
+        
+
+        return services;
+    }
+
 
     private static void ConfigureSerilog(this WebApplicationBuilder builder)
     {

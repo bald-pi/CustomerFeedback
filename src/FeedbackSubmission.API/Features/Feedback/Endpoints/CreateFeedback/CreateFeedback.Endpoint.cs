@@ -10,13 +10,13 @@ public static partial class CreateFeedbackEndpoint
                                      .ReportApiVersions()
                                      .Build();
 
-        var feedbacks = endpoints.MapGroup("api/v{apiVersion:apiVersion}/feedback")
+        var feedbacks = endpoints.MapGroup(Constants.SWAGGER_PREFIX)
                                  .WithApiVersionSet(apiVersionSet)
                                  .WithOpenApi()
                                  .WithTags(nameof(Feedback));
 
         feedbacks.MapPost("/", Endpoint)
-                 .WithSummary("Insert feedback messages")
+                 .WithSummary(Constants.SWAGGER_SUMMARY)
                  .WithOpenApi()
                  .WithMetadata(new SwaggerRequestExampleAttribute(typeof(CreateFeedbackRequest), typeof(CreateFeedbackRequestExample)));
     }
@@ -57,9 +57,9 @@ public static partial class CreateFeedbackEndpoint
 
         var result = await writer.CompleteAsync(cancellationToken).ConfigureAwait(false);
 
-        var feedbacks = await databaseContext.Feedbacks.FromSqlInterpolated($"SELECT id, submission_date, customer_id, tags FROM feedbacks ORDER BY id")
+        var feedbacks = await databaseContext.Feedbacks.FromSqlInterpolated(Constants.SQL_SELECT_STATEMENT)
                                                        .AsNoTracking()
-                                                       .Select(feedback => new Shared.Contracts.Feedback(feedback.Id, feedback.CustomerId, feedback.SubmissionDate, feedback.Tags))
+                                                       .Select(feedback => new Shared.Contracts.Feedback(feedback.Id, feedback.CustomerId, feedback.SubmissionDate, feedback.Tags!))
                                                        .ToListAsync(cancellationToken);
 
         await publisher.Publish(new FeedbacksCreated(feedbacks), cancellationToken);

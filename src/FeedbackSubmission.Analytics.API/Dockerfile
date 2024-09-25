@@ -1,16 +1,18 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 6000
-EXPOSE 6001
+EXPOSE 5000
+EXPOSE 5001
+
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["/FeedbackSubmission.Analytics.API/FeedbackSubmission.Analytics.API.csproj", "FeedbackSubmission.Analytics.API/"]
-RUN dotnet restore "./FeedbackSubmission.Analytics.API/FeedbackSubmission.Analytics.API.csproj"
+COPY ["src/FeedbackSubmission.Analytics.API/FeedbackSubmission.Analytics.API.csproj", "src/FeedbackSubmission.Analytics.API/"]
+COPY ["src/Shared/Shared.csproj", "src/Shared/"]
+RUN dotnet restore "./src/FeedbackSubmission.Analytics.API/FeedbackSubmission.Analytics.API.csproj"
 COPY . .
-WORKDIR "/src/FeedbackSubmission.Analytics.API"
+WORKDIR "/src/src/FeedbackSubmission.Analytics.API"
 RUN dotnet build "./FeedbackSubmission.Analytics.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

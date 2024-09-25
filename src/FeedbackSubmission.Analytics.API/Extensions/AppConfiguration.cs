@@ -1,5 +1,5 @@
-﻿using FeedbackSubmission.Analytics.API.Features.Analytics.Consumers;
-using FeedbackSubmission.Analytics.API.Features.Analytics.Endpoints.GetSummarizedFeedback;
+﻿using FeedbackSubmission.Analytics.API.Features.Summary.Consumers;
+using FeedbackSubmission.Analytics.API.Features.Summary.Endpoints.GetSummarizedFeedback;
 
 namespace FeedbackSubmission.Analytics.API.Extensions;
 
@@ -29,18 +29,15 @@ internal static class AppConfiguration
     internal static void AddSwaggerGenConfiguration(this IServiceCollection services, WebApplicationBuilder builder)
     {
         services.AddEndpointsApiExplorer()
-               .AddSwaggerGen(options =>
-               {
-                   options.SwaggerDoc(Shared.Constants.SWAGGER_VERSION, new()
-                   {
-                       Title = Constants.SWAGGER_API_TITLE,
-                       Version = Shared.Constants.SWAGGER_VERSION
-                   });
-               });
+                .AddSwaggerGen(options =>
+                {
+                    options.SwaggerDoc(Shared.Constants.SWAGGER_VERSION, new()
+                    {
+                        Title = Constants.SWAGGER_API_TITLE,
+                        Version = Shared.Constants.SWAGGER_VERSION
+                    });
+                });
     }
 
-    internal static void AddMiddlewareConfiguration(this WebApplication application)
-    {
-        application.RegisterEndpoints();
-    }
+    internal static void AddMiddlewareConfiguration(this WebApplication application) => application.RegisterEndpoints();
 }

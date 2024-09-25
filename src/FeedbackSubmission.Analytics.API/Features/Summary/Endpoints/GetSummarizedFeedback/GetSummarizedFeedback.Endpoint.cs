@@ -1,6 +1,4 @@
-﻿using FluentResults;
-
-namespace FeedbackSubmission.Analytics.API.Features.Analytics.Endpoints.GetSummarizedFeedback;
+﻿namespace FeedbackSubmission.Analytics.API.Features.Summary.Endpoints.GetSummarizedFeedback;
 
 public static class GetSummarizedFeedback
 {
@@ -11,32 +9,30 @@ public static class GetSummarizedFeedback
                                                                       .ReportApiVersions()
                                                                       .Build();
 
-        RouteGroupBuilder summarizedFeedbacks = endpoints.MapGroup("api/v{apiVersion:apiVersion}/feedback/summarized")
+        RouteGroupBuilder summarizedFeedbacks = endpoints.MapGroup(Constants.SWAGGER_PREFIX)
                                                          .WithApiVersionSet(apiVersionSet)
                                                          .WithOpenApi()
-                                                         .WithTags(nameof(Analytics));
+                                                         .WithTags(nameof(Summary));
 
         summarizedFeedbacks.MapGet("/", Endpoint)
-                           .WithSummary("Get summarized feedback messages")
+                           .WithSummary(Constants.SWAGGER_SUMMARY)
                            .WithOpenApi();
     }
 
     private static async Task<Result<List<FeedbackAnalyticsResponse>>> Endpoint(DatabaseContext databaseContext,
-                                                                                int page,
-                                                                                int pageSize,
-                                                                                CancellationToken cancellationToken)
+                                                                                CancellationToken cancellationToken,
+                                                                                int page = 1,
+                                                                                int pageSize = 15)
     {
-        List<FeedbackAnalyticsResponse> result = await databaseContext.Analytics
+        List<FeedbackAnalyticsResponse> result = await databaseContext.Summaries
                                                                       .Skip((page - 1) * pageSize)
                                                                       .Take(pageSize)
                                                                       .Select(feedback => new FeedbackAnalyticsResponse(feedback.CustomerId,
                                                                                                                         feedback.FeedbackId,
                                                                                                                         feedback.SubmissionDate,
                                                                                                                         feedback.NumberOfTags))
-                                                                      .ToListAsync(cancellationToken); // sreditti
+                                                                      .ToListAsync(cancellationToken);
 
         return Result.Ok(result);
     }
-
-    // validator da ne sme da bude manje od 0
 }

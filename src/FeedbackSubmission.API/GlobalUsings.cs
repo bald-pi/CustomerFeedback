@@ -1,5 +1,7 @@
 ﻿global using Microsoft.EntityFrameworkCore;
 global using Npgsql;
+global using FeedbackSubmission.API;
+global using Shared.Extensions;
 global using Swashbuckle.AspNetCore.Filters;
 global using NpgsqlTypes;
 global using System.Text.RegularExpressions;
