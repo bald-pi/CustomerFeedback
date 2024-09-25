@@ -76,3 +76,5 @@ There are few containers you can run for browser via URL provided:
 - **RabbitMQ portal**: [UI portal](http://localhost:15672/) (credentials are **guest**/**guest**)
 
 - **Seq portal**: [UI portal](http://localhost:5050/)
+
+- - **Jagger portal**: [UI portal](http://localhost:16686/)
