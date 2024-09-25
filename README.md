@@ -78,3 +78,7 @@ There are few containers you can run for browser via URL provided:
 - **Seq portal**: [UI portal](http://localhost:5050/)
 
 - **Jagger portal**: [UI portal](http://localhost:16686/)
+
+## Technical decisions
+
+In section *2.2. Feedback Submission Endpoint* for *customer_id* I made a custom extension method that returs random numbers from 0 to 5000 for sake of simplicity.
