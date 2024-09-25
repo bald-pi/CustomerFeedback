@@ -28,6 +28,7 @@ A customer feedback application receives and processes feedback messages at a hi
 - **Minimal API** for endpoints
 - **Swagger tools** for documenting API's
 - **Entityframework core** as main ORM
+- **OpenTelemetry** for distributed tracing on top of **Jaeger**.
 - **Serilog** for structured logging
 - **Seq** for structured logging centralization
 - **Fluent validation** for building strongly-typed validation rules
