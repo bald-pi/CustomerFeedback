@@ -13,11 +13,9 @@
   - [Step two](#step-two)
   - [Step three](#step-three)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 ## Overview
 
-A customer feedback application receives and processes feedback messages at a high rate. The client application sends feedback messages to a REST API endpoint in bulk (an array of feedback messages) at a rate of 2,000 messages per second. 
+A customer feedback application receives and processes feedback messages at a high rate. The client application sends feedback messages to a REST API endpoint in bulk (an array of feedback messages) at a rate of 2,000 messages per second.
 
 ## Technologies
 
@@ -39,36 +37,36 @@ A customer feedback application receives and processes feedback messages at a hi
 
 ![alt text](https://i.imgur.com/4BHefsZ.png)
 
-In this project I've used [vertical slice architecture](https://jimmybogard.com/vertical-slice-architecture/) + [feature folder structure](http://www.kamilgrzybek.com/design/feature-folders/).
-I treat each request as a distinct use case or slice, encapsulating and grouping all concerns together.
-This approach minimize coupling between slices and maximize coupling in a slice.
-Each slice can decide for itself how to best fulfill the request.
-When new feature is added, there is only add code.
-Side effects are almost none, and shared code is really changed.
+In this project I've used [vertical slice architecture](https://jimmybogard.com/vertical-slice-architecture/) + combined with [feature folder structure] (http://www.kamilgrzybek.com/design/feature-folders/).
+I treat each request as a distinct use case or slice, encapsulating and grouping all related concerns together.
+This approach minimizes coupling between slices and maximizes coupling within a slice.
+Each slice can independently decide how to best fulfill the request.
+When a new feature is added, there's only new code to write.
+Side effects are minimal, and shared code is rarely changed.
 
-I used RabbitMQ as message broker for async communication between microservices using the eventual consistency mechanism.
-Each microservice uses MassTransit for doing broker communications.
-Microservices are event based which means they can publish and/or subscribe to any events occurring in the setup witch made them decoupled.
+I used RabbitMQ as a message broker for asynchronous communication between microservices, employing the eventual consistency mechanism.
+Each microservice utilizes MassTransit for broker communications.
+Microservices are event-driven, enabling them to publish and/or subscribe to any events occurring in the system, making them decoupled.
 
 ## How to run
 
-Process of running application is straighforward.
+Running the application is straightforward.
 
 ### Step one
 
-Clone the repo on desired location
+Clone the repository to your desired location
 
 ### Step two
 
-Go to the cloned folder and run `docker-compose-up` and wait for containers to be initialized.
+Navigate to the cloned folder, then execute `docker-compose-up` and wait for the containers to start.
 
-Once is done, you should see this picture:
+When finished, you will see this picture:
 
 ![img](https://i.imgur.com/KXHVSoh.png)
 
 ### Step three
 
-There are few containers you can run for browser via URL provided:
+You can access the containers via the provided URLs:
 
 - **Create feedback service**: [Swagger documentation](https://localhost:5001/api/docs/index.html)
 
@@ -82,4 +80,4 @@ There are few containers you can run for browser via URL provided:
 
 ## Technical decisions
 
-In section *2.2. Feedback Submission Endpoint* for *customer_id* I made a custom extension method that returs random numbers from 0 to 5000 for sake of simplicity.
+In section *2.2. Feedback Submission Endpoint* for *customer_id* I implemented a custom extension method that generates random numbers between 0 and 5000 for simplicity.
